@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "ShadowKhan — Academic Prompt Enhancer",
+  "version": "1.1.0",
+  "description": "Transform simple questions into well-structured academic discussion prompts powered by Nvidia Nemotron.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "ShadowKhan — Forge Your Prompt"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://learner.saveetha.in/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "https://openrouter.ai/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/icon48.png"],
+      "matches": ["https://learner.saveetha.in/*"]
+    }
+  ]
+}

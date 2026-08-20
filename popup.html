@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShadowKhan — Prompt Enhancer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- ═══ Header ═══ -->
+    <header class="header" id="header">
+      <div class="header__logo">
+        <img src="icons/icon48.png" alt="ShadowKhan" class="header__icon" />
+        <div>
+          <h1 class="header__title">ShadowKhan</h1>
+          <p class="header__subtitle">Academic Prompt Enhancer</p>
+        </div>
+      </div>
+      <span class="header__model-badge">⚡ Nvidia Nemotron</span>
+    </header>
+
+    <!-- ═══ Input Section ═══ -->
+    <main class="main">
+      <section class="card card--input" id="input-section">
+        <div class="field">
+          <label for="question-input" class="field__label">
+            <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Enter your question
+          </label>
+          <textarea
+            id="question-input"
+            class="field__textarea"
+            placeholder="Type your discussion question here..."
+            rows="4"
+          ></textarea>
+          <div class="field__meta">
+            <span class="field__hint">The discussion question you want to respond to</span>
+            <span class="field__counter" id="question-counter">0</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="field__actions" style="display: flex; gap: 8px;">
+          <button id="inject-raw-btn" class="btn btn--action" type="button" style="flex: 1;">
+            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+            Inject Raw
+          </button>
+          <button id="forge-btn" class="btn btn--forge" type="button" style="flex: 2;">
+            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Forge Prompt
+          </button>
+        </div>
+      </section>
+
+      <!-- ═══ Loading State ═══ -->
+      <section class="card card--loading hidden" id="loading-section">
+        <div class="loading">
+          <div class="loading__spinner">
+            <div class="loading__ring"></div>
+            <div class="loading__ring"></div>
+            <div class="loading__ring"></div>
+          </div>
+          <p class="loading__text">Forging from the shadows…</p>
+          <p class="loading__subtext">Nvidia Nemotron is thinking</p>
+        </div>
+      </section>
+
+      <!-- ═══ Output Section ═══ -->
+      <section class="card card--output hidden" id="output-section">
+        <div class="output__header">
+          <h2 class="output__title">
+            <svg class="output__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Forged Response
+          </h2>
+          <span class="output__badge" id="char-badge">0 chars</span>
+        </div>
+        <pre class="output__content" id="output-content"></pre>
+        <div class="output__actions">
+          <button id="copy-btn" class="btn btn--action" type="button">
+            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy
+          </button>
+          <button id="inject-btn" class="btn btn--action" type="button">
+            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+            Inject into Page
+          </button>
+          <button id="clear-btn" class="btn btn--action btn--ghost" type="button">
+            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            Clear
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- ═══ Toast ═══ -->
+    <div class="toast hidden" id="toast">
+      <svg class="toast__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <span class="toast__text" id="toast-text">Copied!</span>
+    </div>
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="footer">
+      <span class="footer__text">ShadowKhan v1.1 · Powered by Nvidia Nemotron</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
